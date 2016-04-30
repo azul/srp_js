@@ -24,7 +24,7 @@ describe("Login with srp var", function() {
       a: 'a5cccf937ea1bf72df5cf8099442552f5664da6780a75436d5a59bc77a8a9993',
       aa: 'e67d222244564ccd2e37471f226b999a4e987f3d494c7d80e0d36169efd6c6c6d857a96924c25fc165e5e9b0212a31c30701ec376dc32e36be00bbcd6d2104789d368af984e26fc094374f90ee5746478f14cec45c7e131a3cbce15fe79e98894213dac4e63c3f73f644fe25aa8707bc58859dfd1b36972e4e34169db2622899',
       // just for the sake of having a complete set of test vars:
-      b: '6aa5c88d1877af9907ccefad31083e1102a7121dc04706f681f66c8680fb7f05', 
+      b: '6aa5c88d1877af9907ccefad31083e1102a7121dc04706f681f66c8680fb7f05',
       bb: 'd56a80aaafdf9f70598b5d1184f122f326a333fafd37ab76d6f7fba4a9c4ee59545be056335150bd64f04880bc8e76949469379fe9de17cf6f36f3ee11713d05f63050486bc73c545163169999ff01b55c0ca4e90d8856a6e3d3a6ffc70b70d993a5308a37a5c2399874344e083e72b3c9afa083d312dfe9096ea9a65023f135',
       k: 'db6ec0bdab81742315861a828323ff492721bdcd114077a4124bc425e4bf328b',
       m: '640e51d5ac5461591c31811221261f0e0eae7c08ce43c85e9556adbd94ed8c26',
@@ -82,7 +82,7 @@ describe("Login with srp var", function() {
 
       expect(srp.loggedIn).toHaveBeenCalled();
     });
-    
+
     it("reports errors during handshake", function(){
       srp.error = jasmine.createSpy();
       var error = {login: "something went wrong on the server side"};
@@ -94,7 +94,7 @@ describe("Login with srp var", function() {
 
       expect(srp.error).toHaveBeenCalledWith(error);
     });
-    
+
     it("rejects B = 0", function(){
       srp.loggedIn = jasmine.createSpy();
       srp.error = jasmine.createSpy();
