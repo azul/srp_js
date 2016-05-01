@@ -11,13 +11,40 @@ srp.jqueryRest = function(api_version) {
     return "/" + api_version + "/" + path;
   }
 
+  function api_request(ajax_opts) {
+
+    function extractVersion(response) {
+      if ( typeof response.api_version !== 'string' ) {
+        srp.error("could not parse api version");
+      }
+      else {
+        api_version = response.api_version;
+        api_request(ajax_opts);
+      }
+    };
+
+    if (typeof api_version !== 'string') {
+      $.get('provider.json').
+        fail(srp.error).
+        done(extractVersion)
+    }
+    else {
+      ajax_opts.url = api_url(ajax_opts.url);
+      return $.ajax(ajax_opts);
+    }
+  };
+
   function register(session) {
-    return $.post(api_url("users.json"), {user: session.signup() });
+    return api_request({
+      url: "users.json",
+      type: 'POST',
+      data: {user: session.signup() }
+    });
   }
 
   function update(session, token) {
-    return $.ajax({
-      url: api_url("users/" + session.id() + ".json"),
+    return api_request({
+      url: "users/" + session.id() + ".json",
       type: 'PUT',
       headers: { Authorization: 'Token token="' + token + '"' },
       data: {user: session.update() }
@@ -25,16 +52,21 @@ srp.jqueryRest = function(api_version) {
   }
 
   function handshake(session) {
-    return $.post(api_url("sessions.json"), session.handshake());
+    return api_request({
+      url: "sessions.json",
+      type: 'POST',
+      data: session.handshake()
+    });
   }
 
   function authenticate(session) {
-    return $.ajax({
-      url: api_url("sessions/" + session.login() + ".json"),
+    return api_request({
+      url: "sessions/" + session.login() + ".json",
       type: 'PUT',
       data: {client_auth: session.getM()}
     });
   }
+
 
   return {
     register: register,
